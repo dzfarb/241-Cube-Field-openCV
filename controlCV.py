@@ -72,9 +72,9 @@ while True:
 			if location[frameIter-1] < 15:
 				sock.sendto(("center").encode(), (UDP_IP, UDP_PORT))
 			elif location[frameIter-1] < 550:
-				sock.sendto(("left").encode(), (UDP_IP, UDP_PORT))
-			elif location[frameIter-1] > 650:
 				sock.sendto(("right").encode(), (UDP_IP, UDP_PORT))
+			elif location[frameIter-1] > 650:
+				sock.sendto(("left").encode(), (UDP_IP, UDP_PORT))
 			else:
 				sock.sendto(("center").encode(), (UDP_IP, UDP_PORT))
 
