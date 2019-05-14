@@ -1,0 +1,7 @@
+to run controlCV.py must have python3 installed with the following packages:
+cv2
+pandas
+socket
+
+When you run controlCV.py stay very still. Raise one hand to go one direction.
+Then put that hand down and raise the other hand to go the other direction.

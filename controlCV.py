@@ -1,9 +1,5 @@
-import numpy as np
-import argparse
 import socket
 import cv2
-import datetime
-import time
 import pandas
 
 #set up socket and plugs into game stream intake
@@ -13,21 +9,12 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # WebCam Game Controller
 
-# importing OpenCV, time and Pandas library
-# importing datetime class from datetime library
-from datetime import datetime
-
 # Assigning our static_back to None
 static_back = None
 
-# List when any moving object appear
-motion_list = [ None, None ]
-
-# Time of movement
-time = []
+frameIter = 0
 
 location = []
-frameIter = 0
 # Initializing DataFrame, one column is start
 # time and other column is end time
 df = pandas.DataFrame(columns = ["Start", "End"])
@@ -36,7 +23,7 @@ df = pandas.DataFrame(columns = ["Start", "End"])
 video = cv2.VideoCapture(0)
 
 #key = cv2.waitKey(0)
-# Infinite while loop to treat stack of image as video
+#keeps recording video
 while True:
 	# Reading frame(image) from video
 	check, frame = video.read()
@@ -71,7 +58,6 @@ while True:
 	for contour in cnts:
 		if cv2.contourArea(contour) < 10000:
 			continue
-		motion = 1
 
 		(x, y, w, h) = cv2.boundingRect(contour)
 		# making green rectangle arround the moving object
@@ -91,20 +77,6 @@ while True:
 				sock.sendto(("right").encode(), (UDP_IP, UDP_PORT))
 			else:
 				sock.sendto(("center").encode(), (UDP_IP, UDP_PORT))
-	# Appending status of motion
-	motion_list.append(motion)
-	#key = cv2.waitKey(1)
-	#if key == 27:
-	#	break
-	motion_list = motion_list[-2:]
-
-	# Appending Start time of motion
-	if motion_list[-1] == 1 and motion_list[-2] == 0:
-		time.append(datetime.now())
-
-	# Appending End time of motion
-	if motion_list[-1] == 0 and motion_list[-2] == 1:
-		time.append(datetime.now())
 
 	# Displaying image in gray_scale
 	#cv2.imshow("Gray Frame", gray)
@@ -118,14 +90,11 @@ while True:
 
 	# Displaying color frame with contour of motion of object
 	#cv2.imshow("Color Frame", frame)
-
-	# if q entered whole process will stop
 	if cv2.waitKey(1) == ord("q"):
-		break # if something is movingthen it append the end time of movement
+		break
 
 
 
 video.release()
 
-# Destroying all the windows
 cv2.destroyAllWindows()
