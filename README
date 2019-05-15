@@ -3,5 +3,6 @@ cv2
 pandas
 socket
 
+Python Script runs much better after quiting and restarting again. We weren't entirely sure why this happens.
 When you run controlCV.py stay very still. Raise one hand to go one direction.
 Then put that hand down and raise the other hand to go the other direction.
